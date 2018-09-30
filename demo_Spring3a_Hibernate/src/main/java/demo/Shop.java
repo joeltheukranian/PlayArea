@@ -6,7 +6,7 @@ public class Shop {
 	int userId = 1, version = 0;
 	
 
-	public Shop(String newName) {
+	public Shop(String newName) { //test change
 		this.setName(newName);
 	}
 	public String getName() {
