@@ -115,11 +115,6 @@
 		</dependency>
 	
 		<!-- ORACLE JDBC driver, need install yourself -->
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc8</artifactId>
-			<version>12.2.0.1</version>
-		</dependency>
 		
 		<dependency>
     		<groupId>mysql</groupId>
@@ -138,5 +133,17 @@
 			<artifactId>javassist</artifactId>
 			<version>3.12.1.GA</version>
 		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.oracle</groupId> -->
+<!-- 			<artifactId>ojdbc7</artifactId> -->
+<!-- 			<version>12.1.0.2</version> -->
+<!-- 		</dependency> -->
 	</dependencies>
+<!-- 	<repositories> -->
+<!-- 		<repository> -->
+<!-- 			<id>my-alternate-repository</id> -->
+<!-- 			<url>https://mvnrepository.com</url> -->
+<!-- 		</repository> -->
+<!-- 	</repositories> -->
+	
 </project>
