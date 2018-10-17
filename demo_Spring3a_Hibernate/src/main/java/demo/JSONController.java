@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.XMLConstants;
@@ -31,6 +33,34 @@ import org.xml.sax.SAXException;
 public class JSONController extends CORSController {
 	static Logger logger = Logger.getLogger(JSONController.class);
 	static String[] names = {"one", "two"}; 
+	static int times = 0;
+	
+	static ReentrantReadWriteLock lock1 = new ReentrantReadWriteLock();
+	public static Runnable runnable = () -> {
+		while(true) {
+			logger.info("****About to wait");
+			try {
+				Thread.currentThread().sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			};
+			++times;
+			logger.info("****Locking");
+			if(lock1.hasQueuedThreads()) {
+				logger.info("****UI action...set them free:" + lock1.getWriteHoldCount());
+				lock1.writeLock().unlock();
+			} else {
+				if(lock1.getWriteHoldCount() == 0) {
+					logger.info("***Acquire lock");
+					lock1.writeLock().lock();
+					logger.info("****Locked");
+				}
+			}
+			
+		}
+	};
+	static ThreadHelper helper = ThreadHelper.start(new Thread(runnable));
 	
 	@RequestMapping(value="{name}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON)
 	public @ResponseBody Shop getShopInJSON(@PathVariable String name) {
@@ -38,6 +68,7 @@ public class JSONController extends CORSController {
 		Shop shop = new Shop(name);
 		shop.setStaffName(new String[]{"Bob", "Jim"});
 		shop.setName(Boolean.toString(validateXML()));
+		
 
 		//validateXML();
 		return shop;
@@ -95,9 +126,25 @@ public class JSONController extends CORSController {
 	public @ResponseBody Shop putShopAtIndex(@PathVariable String index, @RequestBody NameParameter newName) {
 		logger.info("Responding to Put with: " + newName.value);
 		
-		names[Integer.parseInt(index)] = newName.value; 
-
-		return new Shop(newName.value + "Worked fine");
+		try {
+			names[Integer.parseInt(index)] = newName.value; 
+	
+			if(newName.value.equalsIgnoreCase("1")) {
+				logger.info("UI waiting for lock...");
+				lock1.writeLock().lock();
+	//			lock1.lock();
+				try {
+					return new Shop(Integer.toString(times) + " from Put");
+				} finally {
+					lock1.writeLock().unlock();
+				}
+			}
+			
+			return new Shop(newName.value + "Worked fine");
+		} catch (Throwable t) {
+			logger.error("Huh? ", t);
+			return new Shop("Messed up");
+		}
 	}
 	
 }
