@@ -2,23 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>test</groupId>
-	<artifactId>demoSpring3a_hibernate</artifactId>
+	<artifactId>demoSpringHibernate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>test</name>
 	<description>test</description>
 
 	<build>
-<!-- 		<plugins> -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-war-plugin</artifactId> -->
-<!-- 				<version>3.2.0</version> -->
-<!-- 				<configuration> -->
-<!-- 					<webappDirectory>/Users/joellucuik/apache-tomcat-7.0.16_Rest/webapps</webappDirectory> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
-<!-- 		</plugins> -->
 
 		    <plugins>
 		      <plugin>
@@ -33,7 +23,6 @@
 		              <goal>copy-resources</goal>
 		            </goals>
 		            <configuration>
-<!-- 		              <outputDirectory>/Users/joellucuik/apache-tomcat-7.0.16_Rest/webapps/</outputDirectory>-->
 		              <outputDirectory>/Users/joellucuik/apache-tomcat-9.0.12/webapps/</outputDirectory>
 		              <resources>          
 		                <resource>
@@ -54,13 +43,12 @@
 	</build>
 
 	<properties>
- 		<spring.version>5.1.0.RELEASE</spring.version>
-<!--		<spring.version>3.2.2.RELEASE</spring.version> -->
+		<spring.version>5.1.0.RELEASE</spring.version>
 		<jackson.version>1.9.10</jackson.version>
-<!-- 		<jdk.version>1.8</jdk.version>
+		<jdk.version>1.8</jdk.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
- -->	</properties>
+	</properties>
 
 	<dependencies>
 		<!-- servlet api -->
@@ -131,7 +119,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
- 			<version>5.3.7.Final</version> 
+			<version>3.6.3.Final</version>
 		</dependency> 
 
 		<dependency>

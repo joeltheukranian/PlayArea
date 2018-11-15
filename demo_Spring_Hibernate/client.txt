@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Create Object from JSON String</h2>
+
+<p id="demo"></p>
+
+<p id="result"></p>
+
+<script>
+var text = '{"employees":[' +
+'{"firstName":"John","lastName":"Doe" },' +
+'{"firstName":"Anna","lastName":"Smith" },' +
+'{"firstName":"Peter","lastName":"Jones" }]}';
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+   if (this.readyState == 2 && this.status == 200) {
+     document.getElementById("result").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "http://localhost:8444/demo/kfc/brands/kfc-kampar", true);
+  xhttp.send();
+
+
+obj = JSON.parse(text);
+document.getElementById("demo").innerHTML =
+obj.employees[1].firstName + " " + obj.employees[1].lastName;
+</script>
+
+</body>
+</html>

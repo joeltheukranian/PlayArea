@@ -40,10 +40,10 @@ public class JSONController extends CORSController {
 	
 	@RequestMapping(value="{name}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON)
 	public @ResponseBody Shop getShopInJSON(@PathVariable String name) {
-		logger.info("Responding to GET");
+		//logger.info("Responding to GET" + Boolean.toString(validateXML()));
 		Shop shop = new Shop(name);
 		shop.setStaffName(new String[]{"Bob", "Jim"});
-//		shop.setName(Boolean.toString(validateXML()));
+		//shop.setName(Boolean.toString(validateXML()));
 		
 
 		//validateXML();
@@ -56,12 +56,14 @@ public class JSONController extends CORSController {
 	public @ResponseBody Shop getShopAtIndex(@PathVariable String index) {
 		logger.info("Responding to GET");
 //		Transaction txn = HibernateUtil.getSessionFactory().getCurrentSession().beginTransaction();
-		
+
+		//Hibernate
 //		Query query = HibernateUtil.getSessionFactory().getCurrentSession().createQuery("from Shop where id = 1 ");
-		Shop shop = null; //(Shop) query.list().get(0);
+//		Shop shop = (Shop) query.list().get(0);
 		
-//		Shop shop = new Shop(names[Integer.parseInt(index)]);
-//		shop.setStaffName(new String[]{"Bob", "Jim"});
+		//Simple
+		Shop shop = new Shop(names[Integer.parseInt(index)]);
+		shop.setStaffName(new String[]{"Bob", "Jim"});
 
 		return shop;
 
@@ -73,9 +75,9 @@ public class JSONController extends CORSController {
 		
 		try {
 			names[Integer.parseInt(index)] = newName.value; 
-
-			//Add persist
+	
 			if(newName.value.equalsIgnoreCase("1")) {
+//				logger.info("UI waiting for lock...");
 				return new Shop(Integer.toString(times) + " from Put");
 			}
 			
