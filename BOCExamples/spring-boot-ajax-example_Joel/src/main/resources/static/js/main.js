@@ -1,23 +1,25 @@
+var weatherData = null;
+
 $(document).ready(function () {
 	
 	load_weather_data();
 
-    $("#search-form").submit(function (event) {
+    $("#filter-form").submit(function (event) {
 
         //stop submit the form, we will post it manually.
         event.preventDefault();
 
-        fire_ajax_submit();
+        filter();
 
     });
 
 });
 
-function populateWeatherTable(weatherData) {
+function populateWeatherTable(weatherDataFromServer) {
 	var weatherTable = document.getElementById("weatherTable");
 	var currentIndex = 1;
 	
-	weatherData.forEach(function(eachWeatherEntry) {
+	weatherDataFromServer.forEach(function(eachWeatherEntry) {
 		var row = weatherTable.insertRow(currentIndex);
 		currentIndex = currentIndex + 1;
 	
@@ -37,6 +39,7 @@ function populateWeatherTable(weatherData) {
 		cell5.innerHTML = eachWeatherEntry.highest_Monthly_Max_Temp;
 		cell6.innerHTML = eachWeatherEntry.lowestMonthly_Min_Temp;
 	})
+	
 }
 
 
@@ -58,6 +61,7 @@ function load_weather_data() {
             console.log("SUCCESS : ", data);
             populateWeatherTable(data);
 
+            weatherData = data;
         },
         error: function (e) {
 
@@ -68,6 +72,52 @@ function load_weather_data() {
         }
     });
 }
+
+function filter() {
+	var fromDate = new Date($("#from").val());
+	var toDate = new Date($("#to").val());
+	
+	//clear existing rows
+	var weatherTable = document.getElementById("weatherTable");
+	
+	var elmtTable = document.getElementById('weatherTable');
+	var tableBody = elmtTable.getElementsByTagName('tbody')[0];
+	var tableRows = tableBody.getElementsByTagName('tr');
+	var rowCount = tableRows.length;
+
+	for (var x=rowCount-1; x>0; x--) {
+		tableBody.removeChild(tableRows[x]);
+	}
+	
+	//populate with filtered rows
+	var currentIndex = 1;
+	weatherData.forEach(function(eachWeatherEntry) {
+		//parse Date from data. Convert DD/MM/YYYY => MM/DD/YYYY
+		var currentDate = new Date(eachWeatherEntry.date.split("/")[1] + "/" + eachWeatherEntry.date.split("/")[0] + "/" + eachWeatherEntry.date.split("/")[2]);
+		if(fromDate.getTime() <= currentDate.getTime() && toDate.getTime() >= currentDate.getTime()) {
+			var row = weatherTable.insertRow(currentIndex);
+			currentIndex = currentIndex + 1;
+		
+			// Insert 
+			var cell1 = row.insertCell(0); // Station
+			var cell2 = row.insertCell(1); // Province
+			var cell3 = row.insertCell(2); // Date
+			var cell4 = row.insertCell(3); // Mean_Temp
+			var cell5 = row.insertCell(3); // Highest_Monthly_Maxi_Temp
+			var cell6 = row.insertCell(3); // Lowest_Monthly_Min_Temp
+			
+			// Add details text to the new cells
+			cell1.innerHTML = eachWeatherEntry.station_name;
+			cell2.innerHTML = eachWeatherEntry.date;
+			cell3.innerHTML = eachWeatherEntry.province;
+			cell4.innerHTML = eachWeatherEntry.meanTemp;
+			cell5.innerHTML = eachWeatherEntry.highest_Monthly_Max_Temp;
+			cell6.innerHTML = eachWeatherEntry.lowestMonthly_Min_Temp;
+		}
+	})
+
+}
+
 
 function fire_ajax_submit() {
 
