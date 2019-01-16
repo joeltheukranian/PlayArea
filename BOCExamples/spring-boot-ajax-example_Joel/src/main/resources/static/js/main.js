@@ -91,6 +91,7 @@ function filter() {
 	
 	//populate with filtered rows
 	var currentIndex = 1;
+	var indexInData = 1;
 	weatherData.forEach(function(eachWeatherEntry) {
 		//parse Date from data. Convert DD/MM/YYYY => MM/DD/YYYY
 		var currentDate = new Date(eachWeatherEntry.date.split("/")[1] + "/" + eachWeatherEntry.date.split("/")[0] + "/" + eachWeatherEntry.date.split("/")[2]);
@@ -98,6 +99,8 @@ function filter() {
 			var row = weatherTable.insertRow(currentIndex);
 			currentIndex = currentIndex + 1;
 		
+			//row.onclick = clickrow;
+			
 			// Insert 
 			var cell1 = row.insertCell(0); // Station
 			var cell2 = row.insertCell(1); // Province
@@ -108,16 +111,31 @@ function filter() {
 			
 			// Add details text to the new cells
 			cell1.innerHTML = eachWeatherEntry.station_name;
-			cell2.innerHTML = eachWeatherEntry.date;
-			cell3.innerHTML = eachWeatherEntry.province;
-			cell4.innerHTML = eachWeatherEntry.meanTemp;
+			cell2.innerHTML = eachWeatherEntry.province;
+			cell3.innerHTML = eachWeatherEntry.date;
+			//when click on cell, pass the index
+			cell4.innerHTML = "<label onclick='clickrow(" + (indexInData - 1) +  ")'>" + eachWeatherEntry.meanTemp + "</label>";
+			//cell4.onclick = clickCell() 
 			cell5.innerHTML = eachWeatherEntry.highest_Monthly_Max_Temp;
 			cell6.innerHTML = eachWeatherEntry.lowestMonthly_Min_Temp;
 		}
+		++indexInData;
 	})
 
 }
 
+function clickrow(index){
+	alert("Row index is: " + index);
+	localStorage.setItem("station", weatherData[index].station_name);
+	localStorage.setItem("province", weatherData[index].province);
+	localStorage.setItem("date", weatherData[index].date);
+	localStorage.setItem("meanTemp", weatherData[index].meanTemp);
+	localStorage.setItem("lowestMonthly_Min_Temp", weatherData[index].lowestMonthly_Min_Temp);
+	localStorage.setItem("highest_Monthly_Max_Temp", weatherData[index].highest_Monthly_Max_Temp);
+	
+	
+	location.href="/details"
+}
 
 function fire_ajax_submit() {
 

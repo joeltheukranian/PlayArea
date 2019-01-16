@@ -15,4 +15,8 @@ public class IndexController {
         return "ajax";
     }
 
+    @GetMapping("/details")
+    public String details() {
+        return "details";
+    }
 }

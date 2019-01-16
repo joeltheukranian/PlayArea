@@ -1,8 +1,6 @@
 package com.boc.controller;
 
-import com.boc.model.AjaxResponseBody;
 import com.boc.model.SearchCriteria;
-import com.boc.model.User;
 import com.boc.services.WeatherDataService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +18,16 @@ import java.util.stream.Collectors;
 @RestController
 public class WeatherController {
 
-    WeatherDataService userService;
+    WeatherDataService weatherDataService;
 
     @Autowired
-    public void setUserService(WeatherDataService userService) {
-        this.userService = userService;
+    public void setWeatherDataService(WeatherDataService userService) {
+        this.weatherDataService = userService;
     }
 
     @GetMapping("/weatherData")
     public ResponseEntity<?> getWeatherData() {
-    	return ResponseEntity.ok(userService.getWeather());
+    	return ResponseEntity.ok(weatherDataService.getWeather());
 //        AjaxResponseBody result = new AjaxResponseBody();
 //
 //        //If error, just return a 400 bad request, along with the error message
