@@ -57,11 +57,11 @@
 		</dependency>
 
 		<!-- Jackson JSON Mapper -->
-		<dependency>
+<!--		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${jackson.version}</version>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 	
   <build>
